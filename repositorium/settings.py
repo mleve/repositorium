@@ -79,4 +79,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+ )
+
+STATICFILES_DIRS = (
+    os.path.join(SITE_ROOT,'static_root','static'),
+)
+
+
+STATIC_ROOT = os.path.join(SITE_ROOT, 'static_root', 'static')
 STATIC_URL = '/static/'
+
+TEMPLATE_DIRS = (
+    os.path.join(SITE_ROOT,'templates'),
+)
