@@ -1,9 +1,23 @@
+#archivos que estan dando jugo
+encuentrelo/__init__.pyc
+encuentrelo/wsgi.pyc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
 # C extensions
 *.so
+
+#SQLite db file
+*.db
+*.sqlite3
+
+# Archivos raros
+*~
+
+#Archivos compilados de python
+*.pyc
 
 # Distribution / packaging
 .Python
@@ -21,6 +35,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+database.sqlite
 
 # Installer logs
 pip-log.txt
@@ -52,3 +68,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+#Others files
+venv
+staticfiles
+.env
