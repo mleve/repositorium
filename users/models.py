@@ -2,10 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from core.models import Criterion
 
-class UserExtra(models.Model):
-	user = models.OneToOneField(User)
-	punctuations = models.ManyToManyField(Criterion, through = 'Punctuation')
-
 
 class Punctuation(models.Model):
 	user = models.ForeignKey(User)
@@ -13,4 +9,6 @@ class Punctuation(models.Model):
 	score = models.IntegerField()
 	credit = models.IntegerField()
 	failure_rate = models.IntegerField()
+	def __unicode__(self):
+		return self.user.username + " in " + self.criterion.name
 
