@@ -2,6 +2,9 @@
 encuentrelo/__init__.pyc
 encuentrelo/wsgi.pyc
 
+#carpeta on archivos subidos por los usuarios
+media/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
