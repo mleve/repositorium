@@ -5,14 +5,16 @@ from django.db import IntegrityError
 from django.test.utils import override_settings
 from core.models import Criterion
 from users.models import Punctuation
+from django.test import Client
+from django.contrib.auth.models import User
 import json
 
 # Create your tests here.
 
 class PunctuationsTestCase(TestCase):
 	def setUp(self):
-		get_user_model().objects.create(username = "zebhid", password="qwf5xp")
-		get_user_model().objects.create(username = "john", password="qwerty")
+		get_user_model().objects.create_user(username = "zebhid", password="qwf5xp")
+		get_user_model().objects.create_user(username = "john", password="qwerty")
 		Criterion.objects.create(
 			name = "criterio 1",
 			description = "si",
@@ -64,5 +66,19 @@ class PunctuationsTestCase(TestCase):
 			score=5,
 			credit=3,
 			failure_rate=3)
+
+class UsersApiTestCase(TestCase):
+	def setUp(self):
+		get_user_model().objects.create_user(username = "mario", password="mario")
+		get_user_model().objects.create_user(username = "naty", password="naty")
 		
+	def test_user_login(self):
+		c=Client()
+		username = "naty"
+		password = "naty"
+		response = c.post('/api/v1.0/users/login/',{'username' : username, 'password' : password})
+		status = json.loads(response.content)['status']
+		error = json.loads(response.content)['error']
+		self.assertEqual('logged_in',status)
+
 

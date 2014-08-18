@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'repositorium.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^home/','console.views.home'),
+    url(r'^api/v1.0/users/login/','users.views.login'),
     url(r'^admin/', include(admin.site.urls)),
 )+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
