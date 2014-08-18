@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Criterion(models.Model):
-	name = models.CharField(max_length=45)
+	name = models.CharField(max_length=45, unique=True)
 	description = models.TextField()
 	upload_cost = models.IntegerField()
 	download_cost = models.IntegerField()
@@ -13,7 +13,7 @@ class Criterion(models.Model):
 		return self.name
 
 class App(models.Model):
-	name = models.CharField(max_length=45)
+	name = models.CharField(max_length=45, unique=True)
 	description = models.TextField()
 	developers = models.ManyToManyField(User)
 	criteria = models.ManyToManyField(Criterion)
