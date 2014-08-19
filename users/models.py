@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 class Punctuation(models.Model):
 	user = models.ForeignKey(User)
 	criterion = models.ForeignKey(Criterion)
-	score = models.IntegerField()
-	credit = models.IntegerField()
-	failure_rate = models.IntegerField()
+	score = models.IntegerField(default = 0)
+	credit = models.IntegerField(default = 0)
+	failure_rate = models.IntegerField(default = 0)
 	def __unicode__(self):
 		return self.user.username + " in " + self.criterion.name
 

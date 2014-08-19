@@ -81,4 +81,63 @@ class UsersApiTestCase(TestCase):
 		error = json.loads(response.content)['error']
 		self.assertEqual('logged_in',status)
 
+class PunctuationsApiTestCase(TestCase):
+	def setUp(self):
+		get_user_model().objects.create_user(username = "zebhid", password="qwf5xp")
+		get_user_model().objects.create_user(username = "john", password="qwerty")
+		Criterion.objects.create(
+			name = "criterio 1",
+			description = "si",
+			upload_cost = 10,
+			download_cost = 20,
+			challenge_reward = 30)
+		Criterion.objects.create(
+			name = "criterio 2",
+			description = "si",
+			upload_cost = 10,
+			download_cost = 20,
+			challenge_reward = 30)
+		zebhid = get_user_model().objects.get(username="zebhid")
+		criterion1 = Criterion.objects.get(name="criterio 1")
 
+		Punctuation.objects.create(
+			user = zebhid,
+			criterion = criterion1,
+			score=10,
+			credit=10,
+			failure_rate=10)
+
+	def test_get_punctuation_created_registry(self):
+		c = Client()
+		response = c.get('/api/v1.0/users/punctuation/',
+			{'username' : 'zebhid', 'criterion' : 'criterio 1'})
+		parsed_response = json.loads(response.content)
+
+		self.assertEqual('ok',parsed_response['status'])
+		self.assertEqual(10,parsed_response['data']['score'])
+
+	def test_get_punctuation_new_registry(self):
+		Criterion.objects.create(
+			name = "criterio 3",
+			description = "si",
+			upload_cost = 10,
+			download_cost = 20,
+			challenge_reward = 30)
+		c = Client()
+		response = c.get('/api/v1.0/users/punctuation/',
+			{'username' : 'zebhid', 'criterion' : 'criterio 3'})
+		parsed_response = json.loads(response.content)
+		self.assertEqual('ok',parsed_response['status'])
+		self.assertEqual(0,parsed_response['data']['score'])
+
+	def test_get_punctuation_wrong_request(self):
+		"""el usuario o el criterion no existen"""
+		c = Client()
+		response = c.get('/api/v1.0/users/punctuation/',
+			{'username' : 'zebhid', 'criterion' : 'no existo'})
+		response2 = c.get('/api/v1.0/users/punctuation/',
+			{'username' : 'no existo', 'criterion' : 'criterio 1'})
+		parsed_response = json.loads(response.content)
+		parsed_response1 = json.loads(response2.content)
+		self.assertEqual('user or criterion does not exists',parsed_response['error'])
+		self.assertEqual('user or criterion does not exists',parsed_response1['error'])
