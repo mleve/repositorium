@@ -135,9 +135,16 @@ class PunctuationsApiTestCase(TestCase):
 		c = Client()
 		response = c.get('/api/v1.0/users/punctuation/',
 			{'username' : 'zebhid', 'criterion' : 'no existo'})
-		response2 = c.get('/api/v1.0/users/punctuation/',
+		response1 = c.get('/api/v1.0/users/punctuation/',
 			{'username' : 'no existo', 'criterion' : 'criterio 1'})
+		response2 = c.get('/api/v1.0/users/punctuation/',
+			{'criterion' : 'criterio 1'})
+
 		parsed_response = json.loads(response.content)
-		parsed_response1 = json.loads(response2.content)
+		parsed_response1 = json.loads(response1.content)
+		parsed_response2 = json.loads(response2.content)
+		
 		self.assertEqual('user or criterion does not exists',parsed_response['error'])
 		self.assertEqual('user or criterion does not exists',parsed_response1['error'])
+		self.assertEqual('missing parameters, include username and criterion',parsed_response2['error'])
+
