@@ -28,6 +28,17 @@ class PunctuationsTestCase(TestCase):
 			download_cost = 20,
 			challenge_reward = 30)
 
+	def test_update_punctuation(self):
+		zebhid = get_user_model().objects.get(username="zebhid")
+		criterion1 = Criterion.objects.get(name="criterio 1")
+		punctuation = Punctuation.objects.create(
+			user = zebhid,
+			criterion = criterion1,
+			score=5,
+			credit=3,
+			failure_rate=3)
+		response = punctuation.update_punctuation("download")
+		self.assertEqual(False, response)
 
 
 	def test_normal_creation(self):
@@ -66,6 +77,7 @@ class PunctuationsTestCase(TestCase):
 			score=5,
 			credit=3,
 			failure_rate=3)
+
 
 class UsersApiTestCase(TestCase):
 	def setUp(self):

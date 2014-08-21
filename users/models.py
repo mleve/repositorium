@@ -13,6 +13,9 @@ class Punctuation(models.Model):
 	def __unicode__(self):
 		return self.user.username + " in " + self.criterion.name
 
+	def update_punctuation(self):
+		return "si"
+
 	class Meta:
 		unique_together = (("user","criterion"),)
 
