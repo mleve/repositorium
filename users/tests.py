@@ -49,7 +49,8 @@ class PunctuationsTestCase(TestCase):
 			failure_rate=3)
 		response = punctuation2.update_punctuation("download")
 		self.assertEqual(True, response)
-		self.assertEqual(20,punctuation2.score)
+		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		self.assertEqual(20,new_punctuation.score)
 		
 
 
@@ -75,8 +76,37 @@ class PunctuationsTestCase(TestCase):
 			failure_rate=3)
 		response = punctuation2.update_punctuation("upload")
 		self.assertEqual(True, response)
-		self.assertEqual(10,punctuation2.score)
-		self.assertEqual(10,punctuation2.credit)
+		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		self.assertEqual(10,new_punctuation.score)
+		self.assertEqual(10,new_punctuation.credit)
+
+	def test_update_punctuation_challengue(self):
+		zebhid = get_user_model().objects.get(username="zebhid")
+		criterion1 = Criterion.objects.get(name="criterio 1")
+		punctuation = Punctuation.objects.create(
+			user = zebhid,
+			criterion = criterion1,
+			score=0,
+			credit=0,
+			failure_rate=0)
+		response = punctuation.update_punctuation("challenge_fail")
+		self.assertEqual(True, response)
+		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion1)
+		self.assertEqual(0,new_punctuation.credit)
+		self.assertEqual(1,new_punctuation.failure_rate)
+
+		criterion2 = Criterion.objects.get(name="criterio 2")
+		punctuation2 = Punctuation.objects.create(
+			user = zebhid,
+			criterion = criterion2,
+			score=0,
+			credit=0,
+			failure_rate=2)
+		response = punctuation2.update_punctuation("challenge_success")
+		self.assertEqual(True, response)
+		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		self.assertEqual(30,new_punctuation.credit)
+		self.assertEqual(1,new_punctuation.failure_rate)
 
 
 
