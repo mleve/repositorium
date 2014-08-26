@@ -34,8 +34,63 @@ class AppsApiTestCase(TestCase):
 
 		self.assertEqual('ok', status)
 
-
 		app = App.objects.get(name = 'app')
 
 		self.assertEqual('lalala', app.description)
 
+
+	def test_create_duplicated_app(self):
+		c = Client()
+		response1 = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '["naty", "mario"]',
+			 'criteria' : '["criterio1", "criterio2"]'})
+		status1 = json.loads(response1.content)['status']
+		self.assertEqual('ok', status1)
+
+		response2 = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '["naty", "mario"]',
+			 'criteria' : '["criterio1", "criterio2"]'})
+		status2 = json.loads(response2.content)
+		self.assertEqual('error', status2['status'])
+		self.assertEqual('name already used', status2['error'])
+
+
+	def test_empty_developers(self):
+		c = Client()
+		response = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '[]',
+			 'criteria' : '["criterio1", "criterio2"]'})
+		status = json.loads(response.content)
+		self.assertEqual('error', status['status'])
+		self.assertEqual('list of developers or list of criteria empty', status['error'])
+
+
+	def test_empty_criteria(self):
+		c = Client()
+		response = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '["naty", "mario"]',
+			 'criteria' : '[]'})
+		status = json.loads(response.content)
+		self.assertEqual('error', status['status'])
+		self.assertEqual('list of developers or list of criteria empty', status['error']) 
+
+
+	def test_developer_not_in_bd(self):
+		c = Client()
+		response = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '["lal", "mario"]',
+			 'criteria' : '["criterio1", "criterio2"]'})
+		status = json.loads(response.content)
+		self.assertEqual('error', status['status'])
+		self.assertEqual('some of your developers are not in the db', status['error']) 
+
+
+
+	def test_criterion_not_in_db(self):
+		c = Client()
+		response = c.post('/api/v1.0/apps/',
+			{'name' : 'app', 'description' : 'lalala', 'developers' : '["naty", "mario"]',
+			 'criteria' : '["criterio1", "criterio2", "criterio3"]'})
+		status = json.loads(response.content)
+		self.assertEqual('error', status['status'])
+		self.assertEqual('some of your criteria are not in the db', status['error']) 
