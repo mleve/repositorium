@@ -129,7 +129,7 @@ class CriteriaApiTestCase(TestCase):
 	def test_expert_not_in_bd(self):
 		c = Client()
 		response = c.post('/api/v1.0/criteria/',
-			{'name' : 'criterion', 'description' : 'description1', 'expert' : 'mario'})
+			{'name' : 'criterion', 'description' : 'description', 'expert' : 'mario'})
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
 		self.assertEqual('the expert is not in the db', status['error'])
