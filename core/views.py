@@ -55,10 +55,45 @@ def create_app(request):
 					app.criteria.add(Criterion.objects.get(name = criterion))
 
 				response['status'] = 'ok'
-				app.save()
 				return HttpResponse(json.dumps(response), content_type='application/json')
 
 		else:
 			response['status'] = 'error'
 			response['error'] = 'list of developers or list of criteria empty'
 			return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+def create_criterion(request):
+	response = {}
+	name = request.POST['name']
+	description = request.POST['description']
+	#Se asume que al crear un criterio el usuario que lo crea es el experto
+	expert = request.POST['expert']
+
+	#Comprobar que no existe una app con el mismo nombre
+	if Criterion.objects.filter(name = name).exists():
+		response['status'] = 'error'
+		response['error'] = 'name already used'
+		return HttpResponse(json.dumps(response), content_type='application/json') 
+
+	else:
+		#Comprueba que el experto no sea vacio
+		if expert:
+
+			expert_ok = True
+
+			#Comprueba que el experto este en la bd 
+			if not get_user_model().objects.filter(username = expert).exists():
+				expert_ok = False
+				response['status'] = 'error'
+				response['error'] = 'the expert is not in the db'
+				return HttpResponse(json.dumps(response), content_type='application/json')
+
+		criterion = Criterion.objects.create(name = name, description = description)
+		criterion.experts.add(get_user_model().objects.get(username = expert))
+
+		response['status'] = 'ok'
+		return HttpResponse(json.dumps(response), content_type='application/json')
+
+		
+

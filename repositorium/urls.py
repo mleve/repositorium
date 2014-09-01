@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/users/login/','users.views.login'),
     url(r'^api/v1.0/users/punctuation/$','users.views.get_punctuation'),
     url(r'^api/v1.0/apps/$','core.views.create_app'),
+	url(r'^api/v1.0/criteria/$','core.views.create_criterion'),
     url(r'^admin/', include(admin.site.urls)),
 )+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
