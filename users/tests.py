@@ -7,6 +7,7 @@ from core.models import Criterion
 from users.models import Punctuation
 from django.test import Client
 from django.contrib.auth.models import User
+from oauth2_provider.models import Application
 import json
 
 # Create your tests here.
@@ -152,7 +153,7 @@ class UsersApiTestCase(TestCase):
 	def setUp(self):
 		get_user_model().objects.create_user(username = "mario", password="mario")
 		get_user_model().objects.create_user(username = "naty", password="naty")
-		
+	"""
 	def test_user_login(self):
 		c=Client()
 		username = "naty"
@@ -161,7 +162,7 @@ class UsersApiTestCase(TestCase):
 		status = json.loads(response.content)['status']
 		error = json.loads(response.content)['error']
 		self.assertEqual('logged_in',status)
-
+	"""
 class PunctuationsApiTestCase(TestCase):
 	def setUp(self):
 		get_user_model().objects.create_user(username = "zebhid", password="qwf5xp")
@@ -188,12 +189,48 @@ class PunctuationsApiTestCase(TestCase):
 			credit=10,
 			failure_rate=10)
 
+		application = Application.objects.create(
+			client_id = "asdf1234",
+			client_secret = "qwerty1234",
+			user_id = 1,
+			authorization_grant_type = "password",
+			client_type = "secret")
+
+	def get_token(self):
+		c = Client()
+		response = c.post('/o/token/',
+			{'client_id' : 'asdf1234',
+			 'client_secret' : 'qwerty1234',
+			 'grant_type' : 'password',
+			 'username' : 'zebhid',
+			 'password' : 'qwf5xp'})
+		parsed_response = json.loads(response.content)
+		token = parsed_response['access_token']		
+		return token
+
+	def test_get_oauth2_token(self):
+		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}
+
+		response = c.get('/si/',
+			{},
+			**auth_header)
+		self.assertEqual("hola",response.content)
+
+
 	def test_get_punctuation_created_registry(self):
 		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'criterio 1'})
+			{'username' : 'zebhid', 'criterion' : 'criterio 1'},
+			**auth_header)
 		parsed_response = json.loads(response.content)
-
 		self.assertEqual('ok',parsed_response['status'])
 		self.assertEqual(10,parsed_response['data']['score'])
 
@@ -205,8 +242,13 @@ class PunctuationsApiTestCase(TestCase):
 			download_cost = 20,
 			challenge_reward = 30)
 		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'criterio 3'})
+			{'username' : 'zebhid', 'criterion' : 'criterio 3'},
+			**auth_header)
 		parsed_response = json.loads(response.content)
 		self.assertEqual('ok',parsed_response['status'])
 		self.assertEqual(0,parsed_response['data']['score'])
@@ -214,12 +256,19 @@ class PunctuationsApiTestCase(TestCase):
 	def test_get_punctuation_wrong_request(self):
 		"""el usuario o el criterion no existen"""
 		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'no existo'})
+			{'username' : 'zebhid', 'criterion' : 'no existo'},
+			**auth_header)
 		response1 = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'no existo', 'criterion' : 'criterio 1'})
+			{'username' : 'no existo', 'criterion' : 'criterio 1'},
+			**auth_header)
 		response2 = c.get('/api/v1.0/users/punctuation/',
-			{'criterion' : 'criterio 1'})
+			{'criterion' : 'criterio 1'},
+			**auth_header)
 
 		parsed_response = json.loads(response.content)
 		parsed_response1 = json.loads(response1.content)

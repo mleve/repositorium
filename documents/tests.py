@@ -7,4 +7,5 @@ class DocumentsApiTestCase(TestCase):
 		pass
 
 	def test_download_document(self):
+		pass
 		

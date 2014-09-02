@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 #from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
@@ -34,6 +35,11 @@ def login(request):
 			response['error'] = 'username or password incorrect'
 		return HttpResponse(json.dumps(response),content_type='application/json')
 
+@login_required()
+def asdf(request):
+	return HttpResponse("hola")
+
+@login_required()
 def get_punctuation(request):
 	response = {}
 
