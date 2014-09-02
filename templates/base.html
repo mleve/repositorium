@@ -73,44 +73,33 @@
 
 		<!-- Sign up -->
 		<div class="container right-div" style="padding-left: 20px; padding-right:20px">
-			<form role="form">
+			<form action="/home/" method="post" role="form">
 				<h2>Sign Up</h2>
+				{{ sign_in_form.non_field_errors }}
 				<hr class="colorgraph">
 
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
-						</div>
+						{% include "snippets/field.html" with field=sign_in_form.name %}
 					</div>
 
 					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
-						</div>
+						{% include "snippets/field.html" with field=sign_in_form.last_name%}
 					</div>
 				</div>
 
 				<hr class="colorgraph">
-				<div class="form-group">
-					<input type="text" name="user_name" id="user_name" class="form-control input-lg" placeholder="User Name" tabindex="3">
-				</div>
+				{% include "snippets/field.html" with field=sign_in_form.username%}
 
-				<div class="form-group">
-					<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4">
-				</div>
-
+				{% include "snippets/field.html" with field=sign_in_form.email%}
+				
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
-						</div>
+						{% include "snippets/field.html" with field=sign_in_form.password password=True%}
 					</div>
 
 					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6">
-						</div>
+						{% include "snippets/field.html" with field=sign_in_form.confirm_password password=True%}
 					</div>
 				</div>
 

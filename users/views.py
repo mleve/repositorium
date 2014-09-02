@@ -1,39 +1,18 @@
-from django.http import HttpResponse
-from django.contrib.auth import authenticate
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 #from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import  MultiValueDictKeyError
 from users.models import Punctuation
 from core.models import Criterion
 import json
+from django.contrib.auth.forms import UserCreationForm
+from users.forms import UserForm
 # Create your views here.
 
-#@csrf_exempt
-def login(request):
-	if(request.method == 'POST'):
-		response = {}
-		if check_parameters(request.POST,['username','password']) == False:
-			response['status'] = 'error'
-			response['error'] = 'missing parameters, include username and password'
-			return HttpResponse(json.dumps(response),content_type='application/json')
-
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(username = username, password = password)
-		if user is not None:
-			if user.is_active:
-				response['status'] = 'logged_in'
-				response['error'] = ''
-			else:
-				response['status'] = 'error'
-				response['error'] = 'user is not active'
-		else:
-			response['status'] = 'error'
-			response['error'] = 'username or password incorrect'
-		return HttpResponse(json.dumps(response),content_type='application/json')
 
 @login_required()
 def asdf(request):
@@ -78,6 +57,29 @@ def check_parameters(request_params_dict, params_list):
 		if request_params_dict.has_key(param) == False:
 			return False
 	return True
+
+def create_user(request):
+	if request.method == 'POST':
+		form = UserForm(request.POST)
+		if form.is_valid():
+			new_user = get_user_model().objects.create_user(
+				username = form.cleaned_data['username'],
+				password = form.cleaned_data['password'])
+			new_user.first_name = form.cleaned_data['name']
+			new_user.last_name = form.cleaned_data['last_name']
+			new_user.email = form.cleaned_data['email']
+			new_user.save()
+
+			user = authenticate(
+				username=form.cleaned_data['username'],
+				password=form.cleaned_data['password'])
+			login(request,user)
+			return HttpResponseRedirect('/si/')
+
+	else:
+		form = UserForm()
+
+	return render(request, 'base.html',{'sign_in_form' : form})
 
 		
 

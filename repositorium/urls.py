@@ -8,11 +8,11 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'repositorium.views.home', name='home'),
+    url(r'^$', 'console.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^si/', 'users.views.asdf'),
-    url(r'^home/','console.views.home'),
-    url(r'^api/v1.0/users/login/','users.views.login'),
+    url(r'^home/','users.views.create_user'),
+    #url(r'^api/v1.0/users/login/','users.views.login'),
     url(r'^api/v1.0/users/punctuation/$','users.views.get_punctuation'),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),

@@ -1,0 +1,23 @@
+{{field.errors}}
+<div class="form-group">
+	<input 
+	
+		{% if password%}
+			type="password"
+		{% else%}
+			type="text"
+		{% endif%}
+
+
+		name="{{field.html_name}}" 
+		id="first_name" 
+		class="form-control input-lg"
+		
+		{% if field.value == None %}
+			placeholder="{{field.label}}"
+		{% else %} 
+			value="{{field.value}}"
+		{% endif%} 
+
+	/>
+</div>
