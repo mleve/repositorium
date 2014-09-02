@@ -261,20 +261,15 @@ class PunctuationsApiTestCase(TestCase):
 			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
 		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'no existo'},
-			**auth_header)
-		response1 = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'no existo', 'criterion' : 'criterio 1'},
+			{'criterion' : 'no existo'},
 			**auth_header)
 		response2 = c.get('/api/v1.0/users/punctuation/',
-			{'criterion' : 'criterio 1'},
+			{},
 			**auth_header)
 
 		parsed_response = json.loads(response.content)
-		parsed_response1 = json.loads(response1.content)
 		parsed_response2 = json.loads(response2.content)
 		
-		self.assertEqual('user or criterion does not exists',parsed_response['error'])
-		self.assertEqual('user or criterion does not exists',parsed_response1['error'])
-		self.assertEqual('missing parameters, include username and criterion',parsed_response2['error'])
+		self.assertEqual('criterion does not exists',parsed_response['error'])
+		self.assertEqual('missing parameters, include criterion',parsed_response2['error'])
 

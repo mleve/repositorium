@@ -43,16 +43,17 @@ def asdf(request):
 def get_punctuation(request):
 	response = {}
 
-	if check_parameters(request.GET,['username','criterion']) == False:
+	if check_parameters(request.GET,['criterion']) == False:
 		response['status'] = 'error'
-		response['error'] = 'missing parameters, include username and criterion'
+		response['error'] = 'missing parameters, include criterion'
 		return HttpResponse(json.dumps(response),content_type='application/json')
 	
 
-	username = request.GET['username']
+	#username = request.GET['username']
 	criterion = request.GET['criterion']
 	try:
-		user_obj = User.objects.get(username = username)
+		#user_obj = User.objects.get(username = username)
+		user_obj = request.user
 		criterion_obj = Criterion.objects.get(name = criterion)
 		try:
 			punctuation = Punctuation.objects.get(user = user_obj, criterion = criterion_obj)
@@ -68,7 +69,7 @@ def get_punctuation(request):
 		response['data'] = data
 	except ObjectDoesNotExist:
 		response['status'] = 'error'
-		response['error'] = 'user or criterion does not exists'
+		response['error'] = 'criterion does not exists'
 	
 	return HttpResponse(json.dumps(response),content_type='application/json')
 
