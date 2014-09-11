@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 class Criterion(models.Model):
 	name = models.CharField(max_length=45, unique=True)
 	description = models.TextField()
-	upload_cost = models.IntegerField()
-	download_cost = models.IntegerField()
-	challenge_reward = models.IntegerField()
+	upload_cost = models.IntegerField(default = 10)
+	download_cost = models.IntegerField(default = 10)
+	challenge_reward = models.IntegerField(default = 10)
 	experts = models.ManyToManyField(User)
 	def __unicode__(self):
 		return self.name
