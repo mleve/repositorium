@@ -8,10 +8,9 @@ import json
 
 class DocumentsApiTestCase(TestCase):
 	def setUp(self):
-
+		get_user_model().objects.create_user(username = "naty", password="naty")
 
 	def test_download_document(self):
-		get_user_model().objects.create_user(username = "naty", password="naty")
 
 
 	def test_create_document(self):
