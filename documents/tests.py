@@ -4,11 +4,13 @@ from core.models import Document, File, Payment, Fullfill
 from django.test import Client
 import json
 
+
 # Create your tests here.
 
 class DocumentsApiTestCase(TestCase):
 	def setUp(self):
 		get_user_model().objects.create_user(username = "naty", password="naty")
+
 
 	def test_download_document(self):
 

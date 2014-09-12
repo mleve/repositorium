@@ -4,6 +4,8 @@ from core.models import Criterion
 from django.core.exceptions import ValidationError
 
 
+# Create your models here.
+
 class Punctuation(models.Model):
 	user = models.ForeignKey(User)
 	criterion = models.ForeignKey(Criterion)

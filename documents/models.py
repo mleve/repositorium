@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from core.models import Criterion
 
+
+# Create your models here.
+
 class Document(models.Model):
 	name = models.CharField(max_length=45, unique=True)
 	description = models.TextField()
@@ -12,11 +15,13 @@ class Document(models.Model):
 def get_file_name(instance,filename):
 	return "/".join([instance.document.name,filename])
 
+
 class File(models.Model):
 	document = models.ForeignKey(Document)
 	value = models.FileField( upload_to = get_file_name)
 	def __unicode__(self):
 		return self.value.name
+
 
 class Payment(models.Model):
 	user = models.ForeignKey(User)
@@ -25,6 +30,7 @@ class Payment(models.Model):
 		unique_together = (("user","document"),)
 	def __unicode__(self):
 		return self.user.username +" has paid for" + self.document.name
+
 
 class Fullfill(models.Model):
 	criterion = models.ForeignKey(Criterion)

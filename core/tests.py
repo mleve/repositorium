@@ -4,6 +4,7 @@ from core.models import Criterion, App
 from django.test import Client
 import json
 
+
 # Create your tests here.
 
 class AppsApiTestCase(TestCase):
@@ -133,8 +134,3 @@ class CriteriaApiTestCase(TestCase):
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
 		self.assertEqual('the expert is not in the db', status['error'])
-
-
-
-
-

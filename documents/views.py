@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from core.models import Document, File, Payment, Fullfill
 import json
 
+
 # Create your views here.
 
 def create_document(request):
