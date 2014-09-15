@@ -12,10 +12,18 @@ urlpatterns = patterns('',
     url(r'^si/', 'users.views.asdf'),
     url(r'^home/','users.views.create_user'),
     url(r'^api/v1.0/users/punctuation/$','users.views.get_punctuation'),
+<<<<<<< Updated upstream
     url(r'^api/v1.0/apps/$','core.views.create_app'),
 	url(r'^api/v1.0/criteria/$','core.views.create_criterion'),
 	url(r'^api/v1.0/documents/$','documents.views.create_document'),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+=======
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^api/v1.0/apps/$','core.views.create_app'),
+	url(r'^api/v1.0/criteria/$','core.views.create_criterion'),
+	url(r'^api/v1.0/documents/$','documents.views.create_document'),
+>>>>>>> Stashed changes
     url(r'^admin/', include(admin.site.urls)),
 )+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
