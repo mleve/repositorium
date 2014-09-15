@@ -15,16 +15,16 @@ import json
 
 class PunctuationsTestCase(TestCase):
 	def setUp(self):
-		get_user_model().objects.create_user(username = "zebhid", password="qwf5xp")
-		get_user_model().objects.create_user(username = "john", password="qwerty")
+		get_user_model().objects.create_user(username = "naty", password="naty")
+		get_user_model().objects.create_user(username = "mario", password="mario")
 		Criterion.objects.create(
-			name = "criterio 1",
+			name = "criterion1",
 			description = "si",
 			upload_cost = 10,
 			download_cost = 20,
 			challenge_reward = 30)
 		Criterion.objects.create(
-			name = "criterio 2",
+			name = "criterion2",
 			description = "si",
 			upload_cost = 10,
 			download_cost = 20,
@@ -32,110 +32,116 @@ class PunctuationsTestCase(TestCase):
 
 
 	def test_update_punctuation_download(self):
-		zebhid = get_user_model().objects.get(username="zebhid")
-		criterion1 = Criterion.objects.get(name="criterio 1")
+		naty = get_user_model().objects.get(username="naty")
+		criterion1 = Criterion.objects.get(name="criterion1")
 		punctuation = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=5,
 			credit=3,
 			failure_rate=3)
 		response = punctuation.update_punctuation("download")
+		
 		self.assertEqual(False, response)
 
-		criterion2 = Criterion.objects.get(name="criterio 2")
+		criterion2 = Criterion.objects.get(name="criterion2")
 		punctuation2 = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion2,
 			score=0,
 			credit=20,
 			failure_rate=3)
 		response = punctuation2.update_punctuation("download")
+		
 		self.assertEqual(True, response)
-		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		new_punctuation = Punctuation.objects.get(user=naty,criterion=criterion2)
 		self.assertEqual(20,new_punctuation.score)
 		
 
 	def test_update_punctuation_upload(self):
-		zebhid = get_user_model().objects.get(username="zebhid")
-		criterion1 = Criterion.objects.get(name="criterio 1")
+		naty = get_user_model().objects.get(username="naty")
+		criterion1 = Criterion.objects.get(name="criterion1")
 		punctuation = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=5,
 			credit=3,
 			failure_rate=3)
 		response = punctuation.update_punctuation("upload")
+		
 		self.assertEqual(False, response)
 
-		criterion2 = Criterion.objects.get(name="criterio 2")
+		criterion2 = Criterion.objects.get(name="criterion2")
 		punctuation2 = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion2,
 			score=0,
 			credit=20,
 			failure_rate=3)
 		response = punctuation2.update_punctuation("upload")
+		
 		self.assertEqual(True, response)
-		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		new_punctuation = Punctuation.objects.get(user=naty,criterion=criterion2)
 		self.assertEqual(10,new_punctuation.score)
 		self.assertEqual(10,new_punctuation.credit)
 
 
 	def test_update_punctuation_challengue(self):
-		zebhid = get_user_model().objects.get(username="zebhid")
-		criterion1 = Criterion.objects.get(name="criterio 1")
+		naty = get_user_model().objects.get(username="naty")
+		criterion1 = Criterion.objects.get(name="criterion1")
 		punctuation = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=0,
 			credit=0,
 			failure_rate=0)
 		response = punctuation.update_punctuation("challenge_fail")
+		
 		self.assertEqual(True, response)
-		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion1)
+		new_punctuation = Punctuation.objects.get(user=naty,criterion=criterion1)
 		self.assertEqual(0,new_punctuation.credit)
 		self.assertEqual(1,new_punctuation.failure_rate)
 
-		criterion2 = Criterion.objects.get(name="criterio 2")
+		criterion2 = Criterion.objects.get(name="criterion2")
 		punctuation2 = Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion2,
 			score=0,
 			credit=0,
 			failure_rate=2)
 		response = punctuation2.update_punctuation("challenge_success")
+		
 		self.assertEqual(True, response)
-		new_punctuation = Punctuation.objects.get(user=zebhid,criterion=criterion2)
+		new_punctuation = Punctuation.objects.get(user=naty,criterion=criterion2)
 		self.assertEqual(30,new_punctuation.credit)
 		self.assertEqual(1,new_punctuation.failure_rate)
 
 
 	def test_normal_creation(self):
-		zebhid = get_user_model().objects.get(username="zebhid")
-		john = get_user_model().objects.get(username="john")
-		criterion1 = Criterion.objects.get(name="criterio 1")
-		criterion2 = Criterion.objects.get(name="criterio 2")
+		naty = get_user_model().objects.get(username="naty")
+		mario = get_user_model().objects.get(username="mario")
+		criterion1 = Criterion.objects.get(name="criterion1")
+		criterion2 = Criterion.objects.get(name="criterion2")
 
 		Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=5,
 			credit=3,
 			failure_rate=3)
 
-		score = Punctuation.objects.get(user = zebhid, criterion = criterion1).score
+		score = Punctuation.objects.get(user = naty, criterion = criterion1).score
 		self.assertEqual(score,5)
 
 
 	def test_no_duplicate_creation(self):
-		zebhid = get_user_model().objects.get(username="zebhid")
-		john = get_user_model().objects.get(username="john")
-		criterion1 = Criterion.objects.get(name="criterio 1")
-		criterion2 = Criterion.objects.get(name="criterio 2")
+		naty = get_user_model().objects.get(username="naty")
+		mario = get_user_model().objects.get(username="mario")
+		criterion1 = Criterion.objects.get(name="criterion1")
+		criterion2 = Criterion.objects.get(name="criterion2")
 
 		Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=5,
 			credit=3,
@@ -143,7 +149,7 @@ class PunctuationsTestCase(TestCase):
 		
 		self.assertRaises(IntegrityError,
 			Punctuation.objects.create,
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=5,
 			credit=3,
@@ -153,42 +159,32 @@ class PunctuationsTestCase(TestCase):
 
 class UsersApiTestCase(TestCase):
 	def setUp(self):
-		get_user_model().objects.create_user(username = "mario", password="mario")
 		get_user_model().objects.create_user(username = "naty", password="naty")
-	"""
-	def test_user_login(self):
-		c=Client()
-		username = "naty"
-		password = "naty"
-		response = c.post('/api/v1.0/users/login/',{'username' : username, 'password' : password})
-		status = json.loads(response.content)['status']
-		error = json.loads(response.content)['error']
-		self.assertEqual('logged_in',status)
-	"""
+		get_user_model().objects.create_user(username = "mario", password="mario")
 
 
 
 class PunctuationsApiTestCase(TestCase):
 	def setUp(self):
-		get_user_model().objects.create_user(username = "zebhid", password="qwf5xp")
-		get_user_model().objects.create_user(username = "john", password="qwerty")
+		get_user_model().objects.create_user(username = "naty", password="naty")
+		get_user_model().objects.create_user(username = "mario", password="mario")
 		Criterion.objects.create(
-			name = "criterio 1",
+			name = "criterion1",
 			description = "si",
 			upload_cost = 10,
 			download_cost = 20,
 			challenge_reward = 30)
 		Criterion.objects.create(
-			name = "criterio 2",
+			name = "criterion2",
 			description = "si",
 			upload_cost = 10,
 			download_cost = 20,
 			challenge_reward = 30)
-		zebhid = get_user_model().objects.get(username="zebhid")
-		criterion1 = Criterion.objects.get(name="criterio 1")
+		naty = get_user_model().objects.get(username="naty")
+		criterion1 = Criterion.objects.get(name="criterion1")
 
 		Punctuation.objects.create(
-			user = zebhid,
+			user = naty,
 			criterion = criterion1,
 			score=10,
 			credit=10,
@@ -208,8 +204,8 @@ class PunctuationsApiTestCase(TestCase):
 			{'client_id' : 'asdf1234',
 			 'client_secret' : 'qwerty1234',
 			 'grant_type' : 'password',
-			 'username' : 'zebhid',
-			 'password' : 'qwf5xp'})
+			 'username' : 'naty',
+			 'password' : 'naty'})
 		parsed_response = json.loads(response.content)
 		token = parsed_response['access_token']		
 		return token
@@ -235,8 +231,9 @@ class PunctuationsApiTestCase(TestCase):
 			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
 		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'criterio 1'},
+			{'username' : 'naty', 'criterion' : 'criterion1'},
 			**auth_header)
+		
 		parsed_response = json.loads(response.content)
 		self.assertEqual('ok',parsed_response['status'])
 		self.assertEqual(10,parsed_response['data']['score'])
@@ -255,8 +252,9 @@ class PunctuationsApiTestCase(TestCase):
 			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
 		}		
 		response = c.get('/api/v1.0/users/punctuation/',
-			{'username' : 'zebhid', 'criterion' : 'criterio 3'},
+			{'username' : 'naty', 'criterion' : 'criterio 3'},
 			**auth_header)
+		
 		parsed_response = json.loads(response.content)
 		self.assertEqual('ok',parsed_response['status'])
 		self.assertEqual(0,parsed_response['data']['score'])

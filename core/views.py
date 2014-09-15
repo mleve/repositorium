@@ -14,20 +14,20 @@ def create_app(request):
 	developers_names = json.loads(request.POST['developers'])
 	list_of_criteria = json.loads(request.POST['criteria'])
 	
-	#Comprobar que no existe una app con el mismo nombre
+	#Check if there is no app with the same name
 	if App.objects.filter(name = name).exists():
 		response['status'] = 'error'
 		response['error'] = 'name already used'
 		return HttpResponse(json.dumps(response), content_type='application/json') 
 
 	else:
-		#Comprobar que la lista de developers y de criterios sea distinta de vacia
+		#Check that the list of developers and the list of criteria are not empty
 		if developers_names and list_of_criteria:
 
 			developers_ok = True
 			criteria_ok = True
 
-			#Comprueba que los developers esten en la bd 
+			#Check that the developers are in the db
 			for developer in developers_names:
 				if not get_user_model().objects.filter(username = developer).exists():
 					developers_ok = False
@@ -35,7 +35,7 @@ def create_app(request):
 					response['error'] = 'some of your developers are not in the db'
 					return HttpResponse(json.dumps(response), content_type='application/json')
 
-			#Comprueba que los criterios estan en la bd
+			#Checks that the criteria are in the db
 			for criterion in list_of_criteria:
 				if not Criterion.objects.filter(name = criterion).exists():
 					criteria_ok = False
@@ -67,22 +67,22 @@ def create_criterion(request):
 	response = {}
 	name = request.POST['name']
 	description = request.POST['description']
-	#Se asume que al crear un criterio el usuario que lo crea es el experto
+	#It is assumed that that the user who creates the criterion is the expert of it
 	expert = request.POST['expert']
 
-	#Comprobar que no existe una app con el mismo nombre
+	#Checks that there is no app with the same name
 	if Criterion.objects.filter(name = name).exists():
 		response['status'] = 'error'
 		response['error'] = 'name already used'
 		return HttpResponse(json.dumps(response), content_type='application/json') 
 
 	else:
-		#Comprueba que el experto no sea vacio
+		#Checks that the expert is not empty
 		if expert:
 
 			expert_ok = True
 
-			#Comprueba que el experto este en la bd 
+			#Checks that the expert is in the db
 			if not get_user_model().objects.filter(username = expert).exists():
 				expert_ok = False
 				response['status'] = 'error'

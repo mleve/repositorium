@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from core.models import Criterion
+from core.models import Criterion, App
 
 
 # Create your models here.
@@ -21,6 +21,14 @@ class File(models.Model):
 	value = models.FileField( upload_to = get_file_name)
 	def __unicode__(self):
 		return self.value.name
+
+
+class SearchLog(models.Model):
+	user = models.ForeignKey(User)
+	app_name = models.ForeignKey(App)
+	criteria = models.TextField()
+	class Meta:
+		unique_together = (("user","app_name"),)
 
 
 class Payment(models.Model):
