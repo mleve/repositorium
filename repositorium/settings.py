@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oauth2_provider',
+    'widget_tweaks',
     'corsheaders',
     'core',
     'users',

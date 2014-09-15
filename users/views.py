@@ -8,16 +8,11 @@ from django.utils.datastructures import  MultiValueDictKeyError
 from users.models import Punctuation
 from core.models import Criterion
 from django.contrib.auth.forms import UserCreationForm
-from users.forms import UserForm
+from users.forms import UserForm,LoginForm
 import json
 
 
 # Create your views here.
-
-@login_required()
-def asdf(request):
-	return HttpResponse("hola")
-
 @login_required()
 def get_punctuation(request):
 	response = {}
@@ -76,9 +71,28 @@ def create_user(request):
 				username=form.cleaned_data['username'],
 				password=form.cleaned_data['password'])
 			login(request,user)
-			return HttpResponseRedirect('/si/')
+			return HttpResponseRedirect('/home/')
 
 	else:
 		form = UserForm()
+		form2  = LoginForm()
 
-	return render(request, 'base.html',{'sign_in_form' : form})
+	return render(request, 'index.html',{'sign_in_form' : form, 'login_form' : form2})
+
+def log_in(request):
+	if request.method == 'POST':
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			user = authenticate(username = form.cleaned_data['username'],
+				 password = form.cleaned_data['password'])
+			if user is not None:
+				login(request,user)
+				return HttpResponseRedirect('/home/')
+
+	else:
+		form = UserForm()
+		form2  = LoginForm()
+
+	return render(request, 'index.html',{'sign_in_form' : form, 'login_form' : form2})
+
+

@@ -1,142 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Repositorium</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
 
-<!-- Bootstrap and others-->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/my_css.css" rel="stylesheet">
-</head>
-
-<body>
-
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<!--<a class="navbar-brand" href="#">Repositorium</a> -->
-			<a href="index.html" class="repositorium"><img
-				src="images/logo.png" width="300px" pading=10px ""; /> </a>
+	<!-- Welcome -->
+	<div class="container left-div" style="padding-left: 20px; padding-right:20px">
+		<div>
+		<h1><i>Welcome to Repositorium!</i></h1>
+			<hr class="colorgraph">
+			<h2>Slogan here and a basic explanation about what Repositorium is.</h2>
 		</div>
-
-		<p></p>
-
-		<div class="navbar-collapse collapse">
-			<form class="navbar-form navbar-right" role="form" style="margin-left: 1px; margin-right: 1px;">
-				<div class="form-group">
-					<input type="text" placeholder="Email" class="form-control">
-				</div>
-				<div class="form-group">
-					<input type="password" placeholder="Password" class="form-control">
-				</div>
-				<button id="sign-in" type="submit" class="btn btn-success my-button-sign-in">Sign in</button>
-				<p><a href="" data-toggle="modal" data-target="#t_and_c_m" class="pull-right forgot-pass">Forgot Password?</a></p>
-			</form>
-		</div>
-
-		<div class="row">
-			<button id="console" class="col-md-3 col-xs-6 btn-danger">
-				<a>What is Repositorium?</a>
-			</button>
-			<button id="what" class="col-md-3 col-xs-6 btn-warning">
-				<a>How Repositorium works</a>
-			</button>
-			<button id="how" class="col-md-3 col-xs-6 btn-success">
-				<a>Get Started</a>
-			</button>
-			<button id="contact" class="col-md-3 col-xs-6 btn-info">
-				<a>Contact us</a>
-			</button>
-		</div>
-
 	</div>
 
+	<!-- Sign up -->
+	<div class="container right-div" style="padding-left: 20px; padding-right:20px">
+		<form action="/home/" method="post" role="form">
+			<h2>Sign Up</h2>
+			{{ sign_in_form.non_field_errors }}
+			<hr class="colorgraph">
 
-	<!-- Main jumbotron for a primary marketing message or call to action -->
-	<div class="jumbotron">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					{% include "snippets/field.html" with field=sign_in_form.name %}
+				</div>
 
-		<!-- Welcome -->
-		<div class="container left-div" style="padding-left: 20px; padding-right:20px">
-			<div>
-			<h1><i>Welcome to Repositorium!</i></h1>
-				<hr class="colorgraph">
-				<h2>Slogan here and a basic explanation about what Repositorium is.</h2>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					{% include "snippets/field.html" with field=sign_in_form.last_name%}
+				</div>
 			</div>
-		</div>
 
-		<!-- Sign up -->
-		<div class="container right-div" style="padding-left: 20px; padding-right:20px">
-			<form role="form">
-				<h2>Sign Up</h2>
-				<hr class="colorgraph">
+			<hr class="colorgraph">
+			{% include "snippets/field.html" with field=sign_in_form.username%}
 
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
-						</div>
-					</div>
-
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
-						</div>
-					</div>
+			{% include "snippets/field.html" with field=sign_in_form.email%}
+			
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					{% include "snippets/field.html" with field=sign_in_form.password password=True%}
 				</div>
 
-				<hr class="colorgraph">
-				<div class="form-group">
-					<input type="text" name="user_name" id="user_name" class="form-control input-lg" placeholder="User Name" tabindex="3">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					{% include "snippets/field.html" with field=sign_in_form.confirm_password password=True%}
 				</div>
+			</div>
 
-				<div class="form-group">
-					<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4">
-				</div>
+			<p style="font-size: 16px">By clicking <strong>Sign Up</strong>, you agree to the
+			<a href="" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a>
+			set out by this site.</p>	
+			
+			<button id="sign-2" type="submit" class="btn btn-success my-button-sign">Sign Up</button>
 
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
-						</div>
-					</div>
-
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6">
-						</div>
-					</div>
-				</div>
-
-				<p style="font-size: 16px">By clicking <strong>Sign Up</strong>, you agree to the
-				<a href="" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a>
-				set out by this site.</p>	
-				
-				<button id="sign-2" type="submit" class="btn btn-success my-button-sign">Sign Up</button>
-
-			</form>
-		</div>
+		</form>
 	</div>
-
-
-	<!--<footer>
-        <p>&copy; Repositorium</p>
-	</footer>-->
-
-
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="js/jquery.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/contentSelector.js"></script>
-
-</body>
-</html>
-
+</div>
+{% endblock %}
