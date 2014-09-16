@@ -30,18 +30,25 @@
 		<p></p>
 
 		<div class="navbar-collapse collapse">
-			<form action="/users/login/" method="post" role="form" 
-				class="navbar-form navbar-right"  
-				style="margin-left: 1px; margin-right: 1px;">
-
-				<div class="form-group">
-			    	{% render_field login_form.username class+="form-control" placeholder="username" %}
+			{% if user.is_authenticated %}
+				<div class="text-right">
+					<span id="welcome-msg" > hola {{user.username}}</span>
+					<a href="/users/logout/" class="btn my-button">log out</a>
 				</div>
-				<div class="form-group">
-			    	{% render_field login_form.password class+="form-control" placeholder="password" %}
-			     </div>	
-			     <button id="sign-in" type="submit" class="btn btn-success my-button-sign-in">log in</button>
-			</form>
+			{% else %}
+				<form action="/users/login/" method="post" role="form" 
+					class="navbar-form navbar-right"  
+					style="margin-left: 1px; margin-right: 1px;">
+
+					<div class="form-group">
+				    	{% render_field login_form.username class+="form-control" placeholder="username" %}
+					</div>
+					<div class="form-group">
+				    	{% render_field login_form.password class+="form-control" placeholder="password" %}
+				     </div>	
+				     <button id="sign-in" type="submit" class="btn btn-success my-button-sign-in">log in</button>
+				</form>
+			{% endif%}
 		</div>
 
 		<div class="row">
