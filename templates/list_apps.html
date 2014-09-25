@@ -19,15 +19,16 @@
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse">
 							<div class="panel-body">
+
 								<table class="table">
 								<tr>
 								<td>
-								<span class="my-glyphicon glyphicon glyphicon-list"></span><a>List of Applications</a>
+								<span class="my-glyphicon glyphicon glyphicon-list"></span><a href="" class="menu_opt" id="list_apps" >List of Applications</a>
 								</td>
 								</tr>
 								<tr>
 								<td>
-								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a>Register New Application</a>
+								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a href="" class="menu_opt" id="new_app">Register New Application</a>
 								</td>
 								</tr>
 								</table>
@@ -108,7 +109,7 @@
 				</div>
 			</div>
 
-			<div class="col-sm-9 col-md-9" style="padding-top: 30px;padding-left: 0px; padding-right: 0px;">
+			<div class="col-sm-9 col-md-9" style="padding-top: 30px;padding-left: 0px; padding-right: 0px;" id="main_content">
 
 				<!-- BEGGINING -->
 				<div class="well">
@@ -155,6 +156,21 @@
 
 <!-- END -->
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+
+	$(".menu_opt").on("click",function(event){
+		event.preventDefault();
+		if($(this).attr("id") == "new_app"){
+			$.ajax('/app/create/').success(function(result){
+				$("#main_content").html(result);
+			});
+		}
+	});
+</script>
 
 {% endblock %}
 
