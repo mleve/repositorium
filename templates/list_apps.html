@@ -118,14 +118,15 @@
 						<div class="row" style="padding-left: 20px">
 							<div class="control-group" id="fields">
 								<br>
-								<form class="input-append">
-
-									<!-- Repeat This (max 8 apps) -->
-									<div class="my-field"><span class="my-label label label-default">Application Lalala</span><button id="b1" class="btn my-button" type="button">Edit</button></div>
-							 		<!-- -->
-									<div class="my-field"><span class="my-label label label-default">App 2</span><button id="b1" class="btn my-button" type="button">Edit</button></div>
-
-								</form>
+								{% for app in apps %}
+									<div class="my-field">
+										<span class="my-label label label-default">{{app.name}}
+										</span>
+										<button id="b1" class="btn my-button" type="button">Edit
+										</button>
+									</div>
+								{% endfor %}
+							 		
 
 								<!-- Pagination -->
 								<div class="bs-example" style="position: absolute; bottom: 0">
