@@ -11,7 +11,9 @@ urlpatterns = patterns('',
     #Console routes
     url(r'^$', 'users.views.create_user'),
     url(r'^home/','console.views.home'),
-    url(r'^app/create/','console.views.create_app'),
+    url(r'^apps/$','console.views.list_apps'),
+    url(r'^apps/create/','console.views.create_app'),
+    
 
     #Api routes
     url(r'^api/v1.0/users/punctuation/$','users.views.get_punctuation'),

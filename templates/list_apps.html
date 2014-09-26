@@ -165,7 +165,7 @@
 	$(".menu_opt").on("click",function(event){
 		event.preventDefault();
 		if($(this).attr("id") == "new_app"){
-			$.ajax('/app/create/').success(function(result){
+			$.ajax('/apps/create/').success(function(result){
 				$("#main_content").html(result);
 			});
 		}
