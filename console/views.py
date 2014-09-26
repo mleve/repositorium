@@ -25,7 +25,7 @@ def create_app(request):
 			return HttpResponse("ok", content_type='plain/text')
 	else:
 		form = AppForm()
-	return render(request, 'forms/app.html',{'app_form' : form})
+	return render(request, 'console/forms/app.html',{'app_form' : form})
 
 @login_required()
 def list_apps(request):

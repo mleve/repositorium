@@ -14,7 +14,6 @@
 			data : form.serialize(),
 			success: function(data){
 				if(data == "ok"){
-					//TODO visualizar lista de aplicaciones con alerta
 					$.ajax('/apps/?new=true').success(function(result){
 						form.parent().html(result);
 						$("#alert_new").css("display","")
