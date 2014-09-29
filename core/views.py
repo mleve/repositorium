@@ -17,7 +17,7 @@ def create_app(request):
 	#Check if there is no app with the same name
 	if App.objects.filter(name = name).exists():
 		response['status'] = 'error'
-		response['error'] = 'name already used'
+		response['error'] = 'Name already used'
 		return HttpResponse(json.dumps(response), content_type='application/json') 
 
 	else:
@@ -32,7 +32,7 @@ def create_app(request):
 				if not get_user_model().objects.filter(username = developer).exists():
 					developers_ok = False
 					response['status'] = 'error'
-					response['error'] = 'some of your developers are not in the db'
+					response['error'] = 'Some of your developers are not in the db'
 					return HttpResponse(json.dumps(response), content_type='application/json')
 
 			#Checks that the criteria are in the db
@@ -40,7 +40,7 @@ def create_app(request):
 				if not Criterion.objects.filter(name = criterion).exists():
 					criteria_ok = False
 					response['status'] = 'error'
-					response['error'] = 'some of your criteria are not in the db'
+					response['error'] = 'Some of your criteria are not in the db'
 					return HttpResponse(json.dumps(response), content_type='application/json')
 
 
@@ -59,7 +59,7 @@ def create_app(request):
 
 		else:
 			response['status'] = 'error'
-			response['error'] = 'list of developers or list of criteria empty'
+			response['error'] = 'List of developers or list of criteria empty'
 			return HttpResponse(json.dumps(response), content_type='application/json')
 
 
@@ -73,7 +73,7 @@ def create_criterion(request):
 	#Checks that there is no app with the same name
 	if Criterion.objects.filter(name = name).exists():
 		response['status'] = 'error'
-		response['error'] = 'name already used'
+		response['error'] = 'Name already used'
 		return HttpResponse(json.dumps(response), content_type='application/json') 
 
 	else:
@@ -86,7 +86,7 @@ def create_criterion(request):
 			if not get_user_model().objects.filter(username = expert).exists():
 				expert_ok = False
 				response['status'] = 'error'
-				response['error'] = 'the expert is not in the db'
+				response['error'] = 'The expert is not in the db'
 				return HttpResponse(json.dumps(response), content_type='application/json')
 
 		criterion = Criterion.objects.create(name = name, description = description)

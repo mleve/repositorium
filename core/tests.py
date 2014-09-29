@@ -52,7 +52,7 @@ class AppsApiTestCase(TestCase):
 		
 		status2 = json.loads(response2.content)
 		self.assertEqual('error', status2['status'])
-		self.assertEqual('name already used', status2['error'])
+		self.assertEqual('Name already used', status2['error'])
 
 
 	def test_empty_developers(self):
@@ -63,7 +63,7 @@ class AppsApiTestCase(TestCase):
 		
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
-		self.assertEqual('list of developers or list of criteria empty', status['error'])
+		self.assertEqual('List of developers or list of criteria empty', status['error'])
 
 
 	def test_empty_criteria(self):
@@ -74,7 +74,7 @@ class AppsApiTestCase(TestCase):
 		
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
-		self.assertEqual('list of developers or list of criteria empty', status['error']) 
+		self.assertEqual('List of developers or list of criteria empty', status['error']) 
 
 
 	def test_developer_not_in_bd(self):
@@ -85,7 +85,7 @@ class AppsApiTestCase(TestCase):
 		
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
-		self.assertEqual('some of your developers are not in the db', status['error']) 
+		self.assertEqual('Some of your developers are not in the db', status['error']) 
 
 
 	def test_criterion_not_in_db(self):
@@ -96,7 +96,7 @@ class AppsApiTestCase(TestCase):
 		
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
-		self.assertEqual('some of your criteria are not in the db', status['error'])
+		self.assertEqual('Some of your criteria are not in the db', status['error'])
 
 
 
@@ -129,7 +129,7 @@ class CriteriaApiTestCase(TestCase):
 		
 		status2 = json.loads(response2.content)
 		self.assertEqual('error', status2['status'])
-		self.assertEqual('name already used', status2['error'])
+		self.assertEqual('Name already used', status2['error'])
 	
 
 	def test_expert_not_in_bd(self):
@@ -139,4 +139,4 @@ class CriteriaApiTestCase(TestCase):
 		
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
-		self.assertEqual('the expert is not in the db', status['error'])
+		self.assertEqual('The expert is not in the db', status['error'])

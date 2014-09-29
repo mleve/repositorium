@@ -277,5 +277,5 @@ class PunctuationsApiTestCase(TestCase):
 		parsed_response = json.loads(response.content)
 		parsed_response2 = json.loads(response2.content)
 		
-		self.assertEqual('criterion does not exists',parsed_response['error'])
-		self.assertEqual('missing parameters, include criterion',parsed_response2['error'])
+		self.assertEqual('Criterion does not exists',parsed_response['error'])
+		self.assertEqual('Missing parameters, include criterion',parsed_response2['error'])

@@ -24,7 +24,7 @@ def get_punctuation(request):
 
 	if check_parameters(request.GET,['criterion']) == False:
 		response['status'] = 'error'
-		response['error'] = 'missing parameters, include criterion'
+		response['error'] = 'Missing parameters, include criterion'
 		return HttpResponse(json.dumps(response),content_type='application/json')
 	
 
@@ -48,7 +48,7 @@ def get_punctuation(request):
 		response['data'] = data
 	except ObjectDoesNotExist:
 		response['status'] = 'error'
-		response['error'] = 'criterion does not exists'
+		response['error'] = 'Criterion does not exists'
 	
 	return HttpResponse(json.dumps(response),content_type='application/json')
 
