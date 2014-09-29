@@ -5,7 +5,7 @@
 
 	<div style="display: none;" id="alert_new" class="alert alert-success alert-dismissible" role="alert">
 	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	  <strong>Good!</strong> Application created 
+	  <strong>Good!</strong> Application created/updated 
 	</div>
 	<div class="container" style="width: 100%">
 		<div class="row" style="padding-left: 20px">
@@ -15,7 +15,7 @@
 					<div class="my-field">
 						<span class="my-label label label-default">{{app.name}}
 						</span>
-						<button id="b1" class="btn my-button" type="button">Edit
+						<button app="{{app.id}}" class="button_edit_app btn my-button" type="button">Edit
 						</button>
 					</div>
 				{% endfor %}
@@ -40,3 +40,13 @@
 	</div>
 </div>
 <!-- END -->
+<script type="text/javascript">
+	$(".button_edit_app").on("click",function(event){
+		event.preventDefault();
+		var app_id = $(this).attr("app");
+		
+		$.ajax("/apps/create/?app_id="+app_id).success(function(result){
+				$("#main_content").html(result);
+		});
+	});
+</script>

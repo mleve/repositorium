@@ -111,43 +111,8 @@
 
 			<div class="col-sm-9 col-md-9" style="padding-top: 30px;padding-left: 0px; padding-right: 0px;" id="main_content">
 
-				<!-- BEGGINING -->
-				<div class="well">
-					<h2 style="font-weight:bold">My Applications</h2>
-
-					<div class="container" style="width: 100%">
-						<div class="row" style="padding-left: 20px">
-							<div class="control-group" id="fields">
-								<br>
-								{% for app in apps %}
-									<div class="my-field">
-										<span class="my-label label label-default">{{app.name}}
-										</span>
-										<button id="b1" class="btn my-button" type="button">Edit
-										</button>
-									</div>
-								{% endfor %}
-							 		
-
-								<!-- Pagination -->
-								<div class="bs-example" style="position: absolute; bottom: 0">
-									<ul class="pagination pagination-sm">
-										<li class="disabled"><a href="#">&laquo;</a></li>
-										<li class="active"><a style="background-color: grey; border-color: grey;" href="#">1</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li><a href="#">&raquo;</a></li>
-									</ul>
-								</div>
-								<!--  -->
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- END -->
+				
+				{%include 'console/list_apps.html' %}
 
 			</div>
 
@@ -178,6 +143,7 @@
 				$("#main_content").html(result);
 		});
 	});
+
 </script>
 
 {% endblock %}
