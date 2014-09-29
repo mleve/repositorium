@@ -164,11 +164,19 @@
 
 	$(".menu_opt").on("click",function(event){
 		event.preventDefault();
-		if($(this).attr("id") == "new_app"){
-			$.ajax('/apps/create/').success(function(result){
-				$("#main_content").html(result);
-			});
+		var menuId = $(this).attr("id");
+		var menuUrl = "";
+		if(menuId == "new_app"){
+			menuUrl = '/apps/create/';
+			
 		}
+		else if(menuId == "list_apps"){
+			menuUrl = '/apps/';
+		}
+
+		$.ajax(menuUrl).success(function(result){
+				$("#main_content").html(result);
+		});
 	});
 </script>
 
