@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^home/','console.views.home'),
     url(r'^apps/$','console.views.list_apps'),
     url(r'^apps/create/','console.views.create_app'),
+    url(r'^criteria/$','console.views.list_criteria'),
+    url(r'^criteria/create/','console.views.create_criterion'),
+
     
 
     #Api routes

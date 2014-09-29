@@ -48,12 +48,12 @@
 								<table class="table">
 								<tr>
 								<td>
-								<span class="my-glyphicon glyphicon glyphicon-list"></span><a>List of Criteria</a>
+								<span class="my-glyphicon glyphicon glyphicon-list"></span><a href="" class="menu_opt" id="list_criteria">List of Criteria</a>
 								</td>
 								</tr>
 								<tr>
 								<td>
-								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a>Add New Criterion</a>
+								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a href="" class="menu_opt" id="new_criterion" >Add New Criterion</a>
 								</td>
 								</tr>
 								</table>
@@ -138,7 +138,12 @@
 		else if(menuId == "list_apps"){
 			menuUrl = '/apps/';
 		}
-
+		else if(menuId == "list_criteria"){
+			menuUrl = '/criteria/'
+		}
+		else if(menuId == "new_criterion"){
+			menuUrl = '/criteria/create/'
+		}
 		$.ajax(menuUrl).success(function(result){
 				$("#main_content").html(result);
 		});

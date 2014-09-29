@@ -1,0 +1,50 @@
+
+<!-- BEGGINING -->
+<div class="well">
+	<h2 style="font-weight:bold">My Criterions</h2>
+
+	<div style="display: none;" id="alert_new" class="alert alert-success alert-dismissible" role="alert">
+	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	  <strong>Good!</strong> Criterion created/updated 
+	</div>
+	<div class="container" style="width: 100%">
+		<div class="row" style="padding-left: 20px">
+			<div class="control-group" id="fields">
+				<br>
+				{% for criterion in criteria %}
+					<div class="my-field">
+						<span class="my-label label label-default">{{criterion.name}}
+						</span>
+					</div>
+				{% endfor %}
+			 		
+
+				<!-- Pagination -->
+				<div class="bs-example" style="position: absolute; bottom: 0">
+					<ul class="pagination pagination-sm">
+						<li class="disabled"><a href="#">&laquo;</a></li>
+						<li class="active"><a style="background-color: grey; border-color: grey;" href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#">&raquo;</a></li>
+					</ul>
+				</div>
+				<!--  -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END -->
+<script type="text/javascript">
+	$(".button_edit_app").on("click",function(event){
+		event.preventDefault();
+		var app_id = $(this).attr("app");
+		
+		$.ajax("/apps/create/?app_id="+app_id).success(function(result){
+				$("#main_content").html(result);
+		});
+	});
+</script>

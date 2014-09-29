@@ -2,8 +2,8 @@ from django.shortcuts import render_to_response,render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from core.models import App
-from console.forms import AppForm
+from core.models import App, Criterion
+from console.forms import AppForm,CriterionForm
 
 
 # Create your views here.
@@ -39,3 +39,22 @@ def list_apps(request):
 	return render_to_response('console/list_apps.html',
 		{'apps' : apps},
 		context_instance = RequestContext(request))
+
+@login_required()
+def list_criteria(request):
+	criteria = Criterion.objects.filter(experts = request.user)
+	return render_to_response('console/list_criteria.html',
+		{'criteria' : criteria},
+		context_instance = RequestContext(request))
+
+@login_required()
+def create_criterion(request):
+	if request.method == 'POST':
+		form = CriterionForm(request.POST)
+		if form.is_valid():
+			form.save()
+			#TODO create app in oauth to get client_id and secret
+			return HttpResponse("ok", content_type='plain/text')
+	else:
+		form = CriterionForm()
+	return render(request, 'console/forms/criterion.html',{'criterion_form' : form})
