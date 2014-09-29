@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron jumbotron-mod">
+
+	<!-- Lateral Menu -->
+	<div class="container" style="width: 100%">
+		<div class="row">
+			<div class="col-sm-3 col-md-3" style="padding-right: 0px; padding-top: 30px;">
+				<div class="panel-group" id="accordion">
+
+					<div class="panel">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="my-glyphicon glyphicon glyphicon-th">
+							</span>My Applications</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse">
+							<div class="panel-body">
+
+								<table class="table">
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-list"></span><a href="" class="menu_opt" id="list_apps" >List of Applications</a>
+								</td>
+								</tr>
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a href="" class="menu_opt" id="new_app">Register New Application</a>
+								</td>
+								</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="my-glyphicon glyphicon glyphicon-tags">
+							</span>My Criteria</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-list"></span><a>List of Criteria</a>
+								</td>
+								</tr>
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-plus"></span><a>Add New Criterion</a>
+								</td>
+								</tr>
+								</table>
+							</div>
+						</div>					
+					</div>
+
+					<div class="panel">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="my-glyphicon glyphicon glyphicon-folder-open">
+							</span>My Documents</a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-list"></span><a>List of Downloaded Documents</a>
+								</td>
+								</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="my-glyphicon glyphicon glyphicon-user">
+							</span>My Account</a>
+							</h4>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-wrench"></span><a>Change Password</a>
+								</td>
+								</tr>
+								<tr>
+								<td>
+								<span class="my-glyphicon glyphicon glyphicon-trash"></span><a class="text-danger">Delete Account</a>
+								</td>
+								</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-sm-9 col-md-9" style="padding-top: 30px;padding-left: 0px; padding-right: 0px;" id="main_content">
+
+				
+				{%include 'console/list_apps.html' %}
+
+			</div>
+
+		</div>
+	</div>
+
+<!-- END -->
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+
+	$(".menu_opt").on("click",function(event){
+		event.preventDefault();
+		var menuId = $(this).attr("id");
+		var menuUrl = "";
+		if(menuId == "new_app"){
+			menuUrl = '/apps/create/';
+			
+		}
+		else if(menuId == "list_apps"){
+			menuUrl = '/apps/';
+		}
+
+		$.ajax(menuUrl).success(function(result){
+				$("#main_content").html(result);
+		});
+	});
+
+</script>
+
+{% endblock %}
+

@@ -23,6 +23,11 @@ class UserForm(forms.Form):
 			raise forms.ValidationError("Passwords does not match")
 		return cleaned_data
 
+class LoginForm(forms.Form):
+	username = forms.CharField(label = "User name")
+	password = forms.CharField(widget = forms.PasswordInput)
+
+
 
 
 

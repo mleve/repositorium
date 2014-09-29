@@ -1,0 +1,28 @@
+<h1> Register new App </h1>
+<form id="create_app" method="post" action="/apps/create/">
+{{app_form}}
+<button type="submit">send</button>
+</form>
+
+<script type="text/javascript">
+	var form = $("#create_app");
+	form.submit(function(event){
+		event.preventDefault();
+		$.ajax({
+			type: form.attr("method"),
+			url : form.attr("action"),
+			data : form.serialize(),
+			success: function(data){
+				if(data == "ok"){
+					$.ajax('/apps/?new=true').success(function(result){
+						form.parent().html(result);
+						$("#alert_new").css("display","")
+					});
+				}
+				else
+					form.parent().html(data);
+			} 
+		})
+
+	});
+</script>

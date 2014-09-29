@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <!-- Bootstrap and others-->
 <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
 <link href="{% static "css/my_css.css" %}" rel="stylesheet">
+<script src="{% static "js/jquery.js" %}"></script>
 </head>
 
 <body>
@@ -29,16 +31,25 @@
 		<p></p>
 
 		<div class="navbar-collapse collapse">
-			<form class="navbar-form navbar-right" role="form" style="margin-left: 1px; margin-right: 1px;">
-				<div class="form-group">
-					<input type="text" placeholder="Email" class="form-control">
+			{% if user.is_authenticated %}
+				<div class="text-right">
+					<span id="welcome-msg" > hola {{user.username}}</span>
+					<a href="/users/logout/" class="btn my-button">log out</a>
 				</div>
-				<div class="form-group">
-					<input type="password" placeholder="Password" class="form-control">
-				</div>
-				<button id="sign-in" type="submit" class="btn btn-success my-button-sign-in">Sign in</button>
-				<p><a href="" data-toggle="modal" data-target="#t_and_c_m" class="pull-right forgot-pass">Forgot Password?</a></p>
-			</form>
+			{% else %}
+				<form action="/users/login/" method="post" role="form" 
+					class="navbar-form navbar-right"  
+					style="margin-left: 1px; margin-right: 1px;">
+
+					<div class="form-group">
+				    	{% render_field login_form.username class+="form-control" placeholder="username" %}
+					</div>
+					<div class="form-group">
+				    	{% render_field login_form.password class+="form-control" placeholder="password" %}
+				     </div>	
+				     <button id="sign-in" type="submit" class="btn btn-success my-button-sign-in">log in</button>
+				</form>
+			{% endif%}
 		</div>
 
 		<div class="row">
@@ -59,59 +70,8 @@
 	</div>
 
 
-	<!-- Main jumbotron for a primary marketing message or call to action -->
-	<div class="jumbotron">
-
-		<!-- Welcome -->
-		<div class="container left-div" style="padding-left: 20px; padding-right:20px">
-			<div>
-			<h1><i>Welcome to Repositorium!</i></h1>
-				<hr class="colorgraph">
-				<h2>Slogan here and a basic explanation about what Repositorium is.</h2>
-			</div>
-		</div>
-
-		<!-- Sign up -->
-		<div class="container right-div" style="padding-left: 20px; padding-right:20px">
-			<form action="/home/" method="post" role="form">
-				<h2>Sign Up</h2>
-				{{ sign_in_form.non_field_errors }}
-				<hr class="colorgraph">
-
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						{% include "snippets/field.html" with field=sign_in_form.name %}
-					</div>
-
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						{% include "snippets/field.html" with field=sign_in_form.last_name%}
-					</div>
-				</div>
-
-				<hr class="colorgraph">
-				{% include "snippets/field.html" with field=sign_in_form.username%}
-
-				{% include "snippets/field.html" with field=sign_in_form.email%}
-				
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						{% include "snippets/field.html" with field=sign_in_form.password password=True%}
-					</div>
-
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						{% include "snippets/field.html" with field=sign_in_form.confirm_password password=True%}
-					</div>
-				</div>
-
-				<p style="font-size: 16px">By clicking <strong>Sign Up</strong>, you agree to the
-				<a href="" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a>
-				set out by this site.</p>	
-				
-				<button id="sign-2" type="submit" class="btn btn-success my-button-sign">Sign Up</button>
-
-			</form>
-		</div>
-	</div>
+	{% block content %}
+	{% endblock %}
 
 
 	<!--<footer>
@@ -123,9 +83,11 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="{% static "js/jquery.js" %}"></script>
 	<script src="{% static "js/bootstrap.min.js" %}"></script>
 	<script src="{% static "js/contentSelector.js" %}"></script>
+
+	{% block extra_js %}
+	{% endblock %}
 
 </body>
 </html>
