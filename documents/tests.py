@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from core.models import Criterion
 from users.models import Punctuation
+from documents.models import Document
 from oauth2_provider.models import Application
 import json
 
@@ -31,6 +32,14 @@ class DocumentsApiTestCase(TestCase):
 		 	user_id = 1,
 		 	authorization_grant_type = "password",
 		 	client_type = "secret")
+		Document.objects.create(
+			name = "document_test",
+			description = "Document for testing",
+			creator = get_user_model().objects.get(username = "naty"))
+		Document.objects.create(
+			name = "document_test_2",
+			description = "Naty is not my owner :@",
+			creator = get_user_model().objects.get(username = "mario"))
 
 
 	def get_token(self):
@@ -98,4 +107,33 @@ class DocumentsApiTestCase(TestCase):
 		self.assertEqual('ok', status)	
 
 
+	def test_upload_file(self):
+		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}
+		with open('requirements.txt') as fp:
+			response = c.post('/api/v1.0/documents/files/', 
+				{'document_name': 'document_test', 'nombre': fp},
+				**auth_header)
+	
+		status = json.loads(response.content)['status']
+		self.assertEqual('ok', status)
+
+	def test_upload_file_not_owner(self):
+		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}
+		with open('requirements.txt') as fp:
+			response = c.post('/api/v1.0/documents/files/', 
+				{'document_name': 'document_test_2', 'nombre': fp},
+				**auth_header)
+	
+		parsed_response = json.loads(response.content)
+		self.assertEqual('error', parsed_response['status'])
+		self.assertEqual('you are not the owner of this document',
+		 parsed_response['error'])
 	#def test_download_document(self):

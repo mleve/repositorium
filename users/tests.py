@@ -211,19 +211,6 @@ class PunctuationsApiTestCase(TestCase):
 		return token
 
 
-	def test_get_oauth2_token(self):
-		c = Client()
-		token = self.get_token()
-		auth_header = {
-			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
-		}
-
-		response = c.get('/si/',
-			{},
-			**auth_header)
-		self.assertEqual("hola",response.content)
-
-
 	def test_get_punctuation_created_registry(self):
 		c = Client()
 		token = self.get_token()

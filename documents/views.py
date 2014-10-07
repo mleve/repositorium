@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from users.models import Punctuation
 from core.models import Criterion
-from documents.models import Document
+from documents.models import Document, File
 import json
 
 
@@ -57,5 +57,33 @@ def create_document(request):
 	return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-	#Funcion aparte para subir archivos
+
+@login_required
+def upload_file(request):
+	# Check Document existence
+	doc_name = request.POST['document_name']
+	#check user is owner of the document
+	response = {}
+
+	if Document.objects.filter(name = doc_name).exists():
+		document = Document.objects.get(name= doc_name)
+		if document.creator.id == request.user.id:
+			# Check files max_size , not empty 
+
+			# Transfer to final destination
+			for filename, file in request.FILES.iteritems():
+				File.objects.create(document=document,value=file)
+			response['status'] = 'ok'
+		else:
+			response['status'] = 'error'
+			response['error'] = 'you are not the owner of this document'
+	else:
+		response['status'] = "error"
+		response['error'] = "Document doesn't exists"
+
+
+		#Create file record
+
+	return HttpResponse(json.dumps(response),content_type='application/json')
+
 
