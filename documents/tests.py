@@ -107,7 +107,7 @@ class DocumentsApiTestCase(TestCase):
 		self.assertEqual('ok', status)	
 
 
-	def test_upload_file(self):
+	def test_upload_file_with_normal_size(self):
 		c = Client()
 		token = self.get_token()
 		auth_header = {
@@ -121,6 +121,24 @@ class DocumentsApiTestCase(TestCase):
 		status = json.loads(response.content)['status']
 		self.assertEqual('ok', status)
 
+
+	def test_upload_file_with_unaccepted_size(self):
+		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}
+		with open('requirements2.txt') as fp:
+			response = c.post('/api/v1.0/documents/files/', 
+				{'document_name': 'document_test', 'nombre': fp},
+				**auth_header)
+
+		parsed_response = json.loads(response.content)
+		status = parsed_response['status']
+		error = parsed_response['error']
+		self.assertEqual('Some of your files are empty or too big to be uploaded', error)	
+
+
 	def test_upload_file_not_owner(self):
 		c = Client()
 		token = self.get_token()
@@ -133,7 +151,24 @@ class DocumentsApiTestCase(TestCase):
 				**auth_header)
 	
 		parsed_response = json.loads(response.content)
-		self.assertEqual('error', parsed_response['status'])
-		self.assertEqual('you are not the owner of this document',
-		 parsed_response['error'])
-	#def test_download_document(self):
+		status = parsed_response['status']
+		error = parsed_response['error']
+		self.assertEqual('You are not the owner of this document', error)	
+
+
+	def test_get_document(self):
+		c = Client()
+		token = self.get_token()
+		auth_header = {
+			'HTTP_AUTHORIZATION' : 'Bearer ' + token,
+		}
+		with open('requirements.txt') as fp:
+			c.post('/api/v1.0/documents/files/', 
+				{'document_name': 'document_test', 'nombre': fp},
+				**auth_header)
+
+		response = c.get('/api/v1.0/documents', {'document_name': 'document_test'})
+		#Se recibe la metadata correctamente.
+
+		#Obtener archivos adjuntos
+		

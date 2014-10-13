@@ -77,7 +77,7 @@ class AppsApiTestCase(TestCase):
 		self.assertEqual('List of developers or list of criteria empty', status['error']) 
 
 
-	def test_developer_not_in_bd(self):
+	def test_developer_not_in_db(self):
 		c = Client()
 		response = c.post('/api/v1.0/apps/',
 			{'name' : 'app', 'description' : 'description1', 'developers' : '["lal", "mario"]',

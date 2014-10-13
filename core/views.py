@@ -14,14 +14,14 @@ def create_app(request):
 	developers_names = json.loads(request.POST['developers'])
 	list_of_criteria = json.loads(request.POST['criteria'])
 	
-	#Check if there is no app with the same name
+	#Checks if there is no app with the same name
 	if App.objects.filter(name = name).exists():
 		response['status'] = 'error'
 		response['error'] = 'Name already used'
 		return HttpResponse(json.dumps(response), content_type='application/json') 
 
 	else:
-		#Check that the list of developers and the list of criteria are not empty
+		#Checks that the list of developers and the list of criteria are not empty
 		if developers_names and list_of_criteria:
 
 			developers_ok = True
