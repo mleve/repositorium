@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/criteria/$','core.views.create_criterion'),
     url(r'^api/v1.0/documents/$','documents.views.create_document'),
     url(r'^api/v1.0/documents/files/$','documents.views.upload_file'),
+    url(r'^api/v1.0/criteria/challenge/$','core.views.create_challenge'),
     
     #Oauth routes
 

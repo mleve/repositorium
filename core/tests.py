@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core.models import Criterion, App
 from django.test import Client
+from oauth2_provider.models import Application
 import json
+from repositorium.auxiliar import get_auth_header
 
 
 # Create your tests here.
@@ -17,6 +19,7 @@ class AppsApiTestCase(TestCase):
 			upload_cost = 10,
 			download_cost = 20,
 			challenge_reward = 30)
+
 		Criterion.objects.create(
 			name = "criterion2",
 			description = "si",
@@ -140,3 +143,56 @@ class CriteriaApiTestCase(TestCase):
 		status = json.loads(response.content)
 		self.assertEqual('error', status['status'])
 		self.assertEqual('The expert is not in the db', status['error'])
+
+class ChallengeApiTestCase(TestCase):
+	def setUp(self):
+		get_user_model().objects.create_user(username = "naty", password="naty")
+		get_user_model().objects.create_user(username = "mario", password="mario")
+		Criterion.objects.create(
+			name = "criterion1",
+			description = "si",
+			upload_cost = 10,
+			download_cost = 20,
+			challenge_reward = 30)
+		
+		Criterion.objects.create(
+			name = "criterion2",
+			description = "si",
+			upload_cost = 10,
+			download_cost = 20,
+			challenge_reward = 30)
+
+		Document.objects.create(
+			name = "document_test",
+			description = "Document for testing",
+			creator = get_user_model().objects.get(username = "naty"))
+		Document.objects.create(
+			name = "document_test_2",
+			description = "Naty is not my owner :@",
+			creator = get_user_model().objects.get(username = "mario"))
+
+		
+
+		application = Application.objects.create(
+			client_id = "asdf1234",
+		 	client_secret = "qwerty1234",
+		 	user_id = 1,
+		 	authorization_grant_type = "password",
+		 	client_type = "secret")
+
+
+	def test_get_challenge(self):
+		c = Client()
+
+		response = c.get('/api/v1.0/criteria/challenge/',
+			{'criterion' : 'criterion1'},
+			**get_auth_header('mario','mario'))
+
+		self.assertEqual("no",response)
+		parsed_response = json.loads(response.content)
+
+		self.assertEqual("ok",parsed_response['status'])
+
+		#checks get 4 document in the response
+		self.assertEqual(4,len(parsed_response[data].documents))
+

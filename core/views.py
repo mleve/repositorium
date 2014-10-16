@@ -2,7 +2,9 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from core.models import App, Criterion
-
+from django.contrib.auth.decorators import login_required
+from repositorium.auxiliar import aux_get_punctuation, check_parameters
+from documents.models import Document, Fullfill
 import json
 
 # Create your views here.
@@ -95,5 +97,45 @@ def create_criterion(request):
 		response['status'] = 'ok'
 		return HttpResponse(json.dumps(response), content_type='application/json')
 
-		
+@login_required
+def create_challenge(request):
+	response = {}
+
+	user = request.user
+	if check_parameters(request.GET,['criterion']) == False:
+		response['status'] = 'error'
+		response['error'] = 'Missing parameters, include criterion'
+		return HttpResponse(json.dumps(response),content_type='application/json')
+
+	criterion = Criterion.objects.get(name = request.GET['criterion'])
+
+	#get user failure rate
+	punctuation = aux_get_punctuation(user,criterion)
+	fail_rate = punctuation.failure_rate
+	#create challenge record
+	n_known_docs = 2 + fail_rate
+	n_unknown_docs = 4 -n_known_docs
+
+	fulfill = Fullfill.objects.filter(criterion = criterion).order_by('?')
+	docs = []
+	known_docs = []
+	known_docs_id = []
+	for i in range(0,n_known_docs):
+		docs.append(fulfill[i].document)
+		known_docs_id.append(fulfill[i].document.id)
+
+	response['status'] = 'ok'
+	data = {}
+	data['documents'] = docs
+	response['data'] = data
+
+
+
+
+
+	#create response
+
+	return HttpResponse(json.dumps(response), content_type='application/json')
+
+
 

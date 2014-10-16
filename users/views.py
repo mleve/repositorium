@@ -10,6 +10,7 @@ from core.models import Criterion
 from django.contrib.auth.forms import UserCreationForm
 from users.forms import UserForm,LoginForm
 import json
+from repositorium.auxiliar import aux_get_punctuation,check_parameters
 
 
 # Create your views here.
@@ -29,12 +30,7 @@ def get_punctuation(request):
 		#user_obj = User.objects.get(username = username)
 		user_obj = request.user
 		criterion_obj = Criterion.objects.get(name = criterion)
-		try:
-			punctuation = Punctuation.objects.get(user = user_obj, criterion = criterion_obj)
-		except ObjectDoesNotExist:
-			punctuation = Punctuation.objects.create(
-				user = user_obj, 
-				criterion = criterion_obj)
+		punctuation = aux_get_punctuation(user_obj,criterion_obj)
 		response['status'] = 'ok'
 		data = {}
 		data['score'] = punctuation.score
@@ -46,14 +42,6 @@ def get_punctuation(request):
 		response['error'] = 'Criterion does not exists'
 	
 	return HttpResponse(json.dumps(response),content_type='application/json')
-
-
-def check_parameters(request_params_dict, params_list):
-	for param in params_list:
-		if request_params_dict.has_key(param) == False:
-			return False
-	return True
-
 
 def create_user(request):
 	if request.method == 'POST':
