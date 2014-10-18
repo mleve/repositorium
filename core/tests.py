@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core.models import Criterion, App
+from documents.models import Document
 from django.test import Client
 from oauth2_provider.models import Application
 import json
