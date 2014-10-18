@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from users.models import Punctuation
 from core.models import Criterion
-from documents.models import Document, File
-import json
+from documents.models import Document, File,Fullfill
+import json, datetime
 
 
 # Create your views here.
@@ -35,8 +35,10 @@ def create_document(request):
 	payment = True
 
 	#Checks if the user has enough credit to pay for each criterion
+	criteria_list = []
 	for criterion in list_of_criteria:
 		criterion_obj = Criterion.objects.get(name = criterion)
+		criteria_list.append(criterion_obj)
 		try:
 			punctuation = Punctuation.objects.get(user = creator, criterion = criterion_obj)
 		except ObjectDoesNotExist:
@@ -54,8 +56,23 @@ def create_document(request):
 	#Create document
 	document = Document.objects.create(name = name, description = description, creator = creator)
 	response['status'] = 'ok'
+
+	#indicate that the document meets the criteria
+	create_fulfill(document,criteria_list)
+
 	return HttpResponse(json.dumps(response), content_type='application/json')
 
+def create_fulfill(document,criteria):
+	for criterion in criteria:
+		Fullfill.objects.create(
+			criterion = criterion,
+			document = document,
+			status = 1,
+			positive = 0,
+			negative = 0,
+			validated_date = datetime.date.today()
+			)
+	return True
 
 
 @login_required

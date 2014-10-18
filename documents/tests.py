@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from core.models import Criterion
 from users.models import Punctuation
-from documents.models import Document
+from documents.models import Document,Fullfill
 from oauth2_provider.models import Application
 import json
 
@@ -104,7 +104,15 @@ class DocumentsApiTestCase(TestCase):
 			 **auth_header)
 
 		status = json.loads(response.content)['status']
-		self.assertEqual('ok', status)	
+		self.assertEqual('ok', status)
+
+		#verify that the Fullfill record has been created
+		doc = Document.objects.get(name="document")
+		fullfill1 = Fullfill.objects.get(criterion = criterion1, document = doc)
+		fullfill2 = Fullfill.objects.get(criterion = criterion2, document = doc)
+
+		self.assertEqual(1,fullfill1.status)
+		self.assertEqual(1,fullfill2.status)
 
 
 	def test_upload_file_with_normal_size(self):
