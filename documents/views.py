@@ -60,15 +60,26 @@ def create_document(request):
 
 @login_required
 def upload_file(request):
-	# Check Document existence
+	# Checks Document existence
 	doc_name = request.POST['document_name']
-	#check user is owner of the document
+	
 	response = {}
 
 	if Document.objects.filter(name = doc_name).exists():
 		document = Document.objects.get(name= doc_name)
+		# Checks user is owner of the document
 		if document.creator.id == request.user.id:
-			# Check files max_size , not empty 
+
+			size_ok = True;
+
+			#Checks size of the documents
+			for filename, file in request.FILES.iteritems():
+				#Max size 50 Mb
+				if not file.size != 0 and file.size <= 51200:
+					size_of = False
+					response['status'] = 'error'
+					response['error'] = 'Some of your files are empty or too big to be uploaded'
+					return HttpResponse(json.dumps(response), content_type='application/json')	
 
 			# Transfer to final destination
 			for filename, file in request.FILES.iteritems():
@@ -76,14 +87,16 @@ def upload_file(request):
 			response['status'] = 'ok'
 		else:
 			response['status'] = 'error'
-			response['error'] = 'you are not the owner of this document'
+			response['error'] = 'You are not the owner of this document'
 	else:
 		response['status'] = "error"
 		response['error'] = "Document doesn't exists"
 
-
 		#Create file record
-
 	return HttpResponse(json.dumps(response),content_type='application/json')
 
 
+#@login_required
+#def download_file(request):
+	# Check Document existence
+#	doc_name = request.POST['document_name']
