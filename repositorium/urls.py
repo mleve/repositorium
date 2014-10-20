@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     url(r'^criteria/create/','console.views.create_criterion'),
 
     
-
     #Api routes
     url(r'^api/v1.0/users/punctuation/$','users.views.get_punctuation'),
     url(r'^api/v1.0/apps/$','core.views.create_app'),
@@ -25,8 +24,8 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/documents/$','documents.views.create_document'),
     url(r'^api/v1.0/documents/files/$','documents.views.upload_file'),
     
-    #Oauth routes
 
+    #Oauth routes
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^users/login/$', 'users.views.log_in'),

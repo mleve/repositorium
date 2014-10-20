@@ -73,7 +73,6 @@ class DocumentsApiTestCase(TestCase):
 		self.assertEqual("You don't have enough credit to upload this document", status['error'])
 
 
-
 	def test_create_document_user_with_enough_credit(self):
 		c = Client()
 
@@ -167,8 +166,8 @@ class DocumentsApiTestCase(TestCase):
 				{'document_name': 'document_test', 'nombre': fp},
 				**auth_header)
 
-		response = c.get('/api/v1.0/documents', {'document_name': 'document_test'})
-		#Se recibe la metadata correctamente.
-
-		#Obtener archivos adjuntos
-		
+		response = c.get('/api/v1.0/documents/', {'document_name': 'document_test'},
+			**auth_header)
+		parsed_response = json.loads(response.content)
+		status = parsed_response['status']
+		self.assertEqual('ok', status)
